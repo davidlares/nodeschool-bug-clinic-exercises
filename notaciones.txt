@@ -1,0 +1,119 @@
+Bug Clinic
+---------
+
+Gentle introduction to the sometimes challenging and upsetting world 
+of debugging, especifically Node Programs
+
+Prerequisites
+----	 
+	A nodeJs complete development enviroment
+
+Objectives
+----
+	Learn general strategies than using specialized tools
+	Detect whats wrong with the modules built
+	Productions systems easier to troubleshoot
+
+==========
+
+	Console printing -> is the most simplest way of diagnosing an issue
+	in a production service
+
+		 Figuring out whats wrong with your program
+
+		console.log() -> standard output
+		console.error() -> standard error
+
+			1. Pass many comma separated parameters to them as you like
+			2. parameters are passed to Node's util.format()
+				%s -> strings
+				%d -> numbers
+				%j -> parameters through JSON.stringify()
+
+		Other ways
+		-----
+		console.trace(label) -> dump stacktrace at line trace is called
+		console.time(label) -> quick and dirty benchmarking
+		console.assert(expression, arguments) -> assert that expression is true
+		console.dir(object)
+
+===========
+
+	In many times in JS, things that can do are also things that
+	shouldnt do 
+
+		- CODE LINTERS USAGE -> jshint package -> jshintrc hint
+
+===========
+
+	Monitoring -> the time you need to know what your program was doing
+	when it stopped doing what you wanted
+
+	READ: twelve factor App Manifesto
+
+	Logging Frameworks
+	----
+	1. Each entry has a consistent format.
+	2. Each loggable event maps to a single log entry.
+	3. The log entries are guaranteed to be recorded in the order in which they occurred.
+	4. There are multiple levels at which you can log, so you can choose
+   	the level of granularity that suits your current level of interest
+   	(are you running in production? Debugging a new configuration?
+   	Troubleshooting a complex or confusing function?).
+	5. A single stream of log events should be collected from multiple
+   	sources and stored in a single place.
+	6. You should be able to browse the logs using standard tools.
+
+		Node Core Debug - bunyan package
+			a bunch of JSON objects for logging
+
+
+=============
+
+	Traces
+	----	
+		- StackTrace - first sign that something has gone wrong
+		- Fixing with a lot of logging is not always the best way
+		- Long Stacktraces module to get more context
+
+		  - Not usable in production - too much overhead
+		  - Sometimes gives too much information
+
+==============
+
+Scan
+---	 	
+	MONITOR mentioned that Node ahve some low-level built-in support
+	for logging
+
+		- NODE_DEBUG Environment
+		- Works perfectly on Node Native modules - MET. HTTP, FS, TLS, MODULES, TIMERS
+
+		Runs like:
+			NODE_DEBUG=http node <filename.js>
+
+DTrace
+----
+	Dynamic Tracing System
+		-Power, and general tracing tool ever developed
+		- Disadvantage: not supported in SmartOS, Joyent clouds, etc
+
+	Third party modules
+	----
+		Module: JStrace
+			jstrace(signal, data)
+
+			1. at the beginning of the response handler:
+				request:start - payload object (URL)
+
+			2. request:end -> payload object that includes the HTTP
+			code as statusCode -> JS obj with the name: body
+
+		3 steps
+		----
+			- node server.js
+				-> ps aux | grep node
+			- curl http://localhost:9999/XYZ
+				-> stimulates the server to do something
+			- jstrace -p <server-pid> watcher.js 
+				-> gives the jstrace message
