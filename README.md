@@ -1,15 +1,11 @@
-## DavidBug
+## Bug clinic
 
- Workshop de buenas practicas para hacer debugging en programas de NodeJS. Uso de librerias, ejemplos y tecnicas generales para hacer estas actividades de manera correcto
+Workshop on best practices for debugging NodeJS programs. Use of libraries, examples, and general techniques to perform these activities correctly.
 
- Parte de la serie de Workshops de NodeSchool
+Part of the NodeSchool Workshop Series
 
-## Créditos
-- [David E Lares S](https://twitter.com/@davidlares3)
+## Credits
+[David Lares S](https://davidlares.com)
 
-## NodeSchool Workshop
-- https://github.com/othiym23/bug-clinic/
-
-## Licencia
-
+## License
 [MIT](https://opensource.org/licenses/MIT)
